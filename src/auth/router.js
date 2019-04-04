@@ -23,6 +23,13 @@ authRouter.post('/signin', auth, (req, res, next) => {
   res.cookie('auth', req.token);
   res.send(req.token);
 });
+/**
+ * Route to get eternal access token
+ */
+authRouter.post('/key', auth, (req, res, next) => {
+  res.cookie('auth', req.token);
+  res.send(req.token);
+});
 
 authRouter.get('/oauth', (req,res,next) => {
   oauth.authorize(req)
