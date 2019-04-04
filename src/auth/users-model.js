@@ -3,6 +3,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+// const randtoken = require('rand-token'); //needed to generate a random token
 
 const users = new mongoose.Schema({
   username: {type:String, required:true, unique:true},
@@ -39,6 +40,13 @@ users.statics.createFromOauth = function(email) {
 
 };
 
+users.statics.authenticateBearer = 
+function(token) {
+  let parsedToken = jwt.verify( token, process.env.SECRET);
+  let id = parsedToken.id;
+  return this.findOne({_id:id});
+};
+
 users.statics.authenticateBasic = function(auth) {
   let query = {username:auth.username};
   return this.findOne(query)
@@ -52,13 +60,36 @@ users.methods.comparePassword = function(password) {
 };
 
 users.methods.generateToken = function() {
-  
+  // let refreshToken = {};
   let token = {
     id: this._id,
     role: this.role,
   };
+
+  let tokenOptions = {
+    expiresIn: '15min', //15 min timeout (300 sec)
+    algorithm:  'HS256', //hash algorithm
+  };
   
-  return jwt.sign(token, process.env.SECRET);
+  // let refreshToken = randtoken.uid;
+  return jwt.sign(token, process.env.SECRET, tokenOptions);
+};
+/**
+ * Method to generate an eternal access token
+ * @method 
+ */
+users.methods.generateEternalToken = function() {
+  let token = {
+    id: this._id,
+    role: this.role,
+  };
+
+  let tokenOptions = {
+    algorithm: 'HS256',
+    //does not expire
+  };
+
+  return jwt.sign(token, process.env.SECRET, tokenOptions);
 };
 
 module.exports = mongoose.model('users', users);

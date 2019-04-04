@@ -8,10 +8,12 @@ module.exports = (req, res, next) => {
     let [authType, authString] = req.headers.authorization.split(/\s+/);
     
     switch( authType.toLowerCase() ) {
-      case 'basic': 
-        return _authBasic(authString);
-      default: 
-        return _authError();
+    case 'basic': 
+      return _authBasic(authString);
+    case 'bearer':
+      return _authBearer(authString);
+    default: 
+      return _authError();
     }
   }
   catch(e) {
@@ -31,10 +33,33 @@ module.exports = (req, res, next) => {
       .catch(next);
   }
 
+  function _authBearer(str) {
+    return User.authenticateBearer(str)
+      .then( user => _authenticate(user))
+      .catch( next);
+  }
+
   function _authenticate(user) {
     if(user) {
       req.user = user;
       req.token = user.generateToken();
+      next();
+    }
+    else {
+      _authError();
+    }
+  }
+  
+  /**
+   * Function that generates an eternal token
+   * @function
+   * @name _eternalToken()
+   * @param  {object} user
+   */
+  function _eternalToken(user) {
+    if(user) {
+      req.user = user;
+      req.token = user.generateEternalToken();
       next();
     }
     else {
