@@ -6,7 +6,7 @@
 ### Author: Erin Trainor
 [![Build Status](https://www.travis-ci.com/401-advanced-javascript-401d29/lab-13.svg?branch=submission)](https://www.travis-ci.com/401-advanced-javascript-401d29/lab-13)
 ### Links and Resources
-* [repo](http://xyz.com)
+* [repo](https://github.com/401-advanced-javascript-401d29/lab-13/pull/2)
 * [travis](https://www.travis-ci.com/401-advanced-javascript-401d29/lab-13)
 * [back-end](https://hidden-sea-21748.herokuapp.com/)
 
