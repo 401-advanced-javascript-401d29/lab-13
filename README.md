@@ -8,8 +8,7 @@
 ### Links and Resources
 * [repo](http://xyz.com)
 * [travis](http://xyz.com)
-* [back-end](http://xyz.com) (when applicable)
-* [front-end](http://xyz.com) (when applicable)
+* [back-end](https://hidden-sea-21748.herokuapp.com/)
 
 #### Documentation
 * [jsdoc](http://xyz.com) (All assignments)
